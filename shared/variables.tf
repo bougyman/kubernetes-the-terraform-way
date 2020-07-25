@@ -28,3 +28,8 @@ variable "controller_count" {
 variable "username" {
   description = "The username to use for connections"
 }
+
+variable "credentials_path" {
+  description = "Path to gcp credentials"
+  default     = "account.json"
+}

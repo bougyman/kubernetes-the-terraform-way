@@ -1,6 +1,9 @@
 ssl/*
-kube_config/*
+kube_configs/*
 .terraform
 account.json
 *.tfstate
 *.tfstate.backup
+*.swp
+*/ssl
+*/kube_configs

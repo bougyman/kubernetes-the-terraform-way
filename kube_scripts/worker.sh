@@ -7,7 +7,7 @@ kubectl config set-cluster kubernetes-the-hard-way \
     --kubeconfig=kube_configs/${instance}.kubeconfig
 
 kubectl config set-credentials system:node:${instance} \
-    --client-certificate=${instance}.pem \
+    --client-certificate=ssl/${instance}.pem \
     --client-key=ssl/${instance}-key.pem \
     --embed-certs=true \
     --kubeconfig=kube_configs/${instance}.kubeconfig
