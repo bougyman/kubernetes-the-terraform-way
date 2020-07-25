@@ -123,6 +123,7 @@ resource "null_resource" "workers" {
     internal_ip = google_compute_instance.worker[count.index].network_interface.0.network_ip
     external_ip = google_compute_instance.worker[count.index].network_interface.0.access_config.0.nat_ip
     username    = var.username
+    controllers = null_resource.contollers.triggers.controllers[count.index].external_ip
   }
   provisioner "local-exec" {
     environment = {
