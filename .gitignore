@@ -1,0 +1,6 @@
+ssl/*
+kube_config/*
+.terraform
+account.json
+*.tfstate
+*.tfstate.backup
