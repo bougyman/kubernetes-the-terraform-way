@@ -94,7 +94,7 @@ NOTE: `gcp/instances.tf` has verbose descriptions of the https://www.terraform.i
 
 ### Lab 4 - The SSL
 
-Most of the work for creating SSL / PKI infra is described in `gcp/ssl-provisioner.tf`, leveraging the scripts in `ssl_scripts/`. This provisioners
+Most of the work for creating SSL / PKI infra is described in `gcp/ssl-provisioner.tf`, leveraging the scripts in `ssl_scripts/`. This provisioner
 makes abusive/offensive use of the terraform local-exec provisioner to execute scripts which create the ssl artifacts in `gcp/ssl/*`. The provisioners 
 for the workers and controllers will copy these artifacts onto the instances later.
 
