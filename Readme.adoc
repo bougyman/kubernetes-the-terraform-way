@@ -89,6 +89,7 @@ The https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/
 There are two sets of compute instances, the controllers and the workers. The counts of controllers and workers can be controlled by setting the
 `worker_count` and `controller_count` variables (in `vars.auto.tfvars`). If they are not set, they default to 3 controllers and 3 workers, as k-t-h-w
 does in the labs. These resources are created with the `gcp/instances.tf`.
++
 NOTE: The `instances.tf` has verbose descriptions of the `google_computel_instance` resources. Many of the attributes are set to their default value and could be excluded.
 
 
