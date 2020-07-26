@@ -39,6 +39,8 @@ mkdir -p ~/.gcp
 gcloud iam service-accounts keys create ~/.gcp/k-t-h-w-account.json --iam-account <your_account_identifier>
 ----
 +
+IMPORTANT: The <your_account_identifier> can be found in the 'IAM' tab of your project. It's the Compute Engine default service account entry
++
 * Edit `gcp/vars.auto.tfvars` - Enter the full path to the json file created above credential_path, and change the project name to be your project's name.
 * Validate setup
 +
@@ -48,8 +50,6 @@ cd gcp
 terraform init
 terraform plan
 ----
-+
-IMPORTANT: The <your_account_identifier> can be found in the 'IAM' tab of your project. It's the Compute Engine default service account entry
 
 ### Run Labs 3-11!
 
