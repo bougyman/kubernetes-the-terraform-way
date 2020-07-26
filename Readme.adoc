@@ -31,17 +31,33 @@ Configuring Terraform
 
 We'll stick with GCP for now (AWS and Azure planned for future inclusion). First you must get credentials for terraform to manage GCP resources.
 
+First things first, go find your IAM Compute Engine default service account entry. You'll need the email address from the first column.
+
+* Set the service_account_email for terraform
++
+[source]
+----
+export TF_VAR_service_account_email=<your_service_email_account>
+----
++
 * Create credentials .json
 +
 [source]
 ----
 mkdir -p ~/.gcp
-gcloud iam service-accounts keys create ~/.gcp/k-t-h-w-account.json --iam-account <your_account_identifier>
+gcloud iam service-accounts keys create ~/.gcp/k-t-h-w-account.json --iam-account $TF_VAR_service_account_email
 ----
 +
 IMPORTANT: The <your_account_identifier> can be found in the 'IAM' tab of your project. It's the Compute Engine default service account entry
 +
 * Edit `gcp/vars.auto.tfvars` - Enter the full path to the json file created above credential_path, and change the project name to be your project's name.
+* Set your username
++
+[source]
+----
+export TF_VAR_username=$USER
+----
++
 * Validate setup
 +
 [source]

@@ -51,7 +51,7 @@ resource "google_compute_instance" "controller" {
   }
 
   service_account {
-    email = "421880274612-compute@developer.gserviceaccount.com"
+    email = var.service_account_email
     scopes = [
       "https://www.googleapis.com/auth/compute",
       "https://www.googleapis.com/auth/devstorage.read_only",
@@ -120,7 +120,7 @@ resource "google_compute_instance" "worker" {
   }
 
   service_account {
-    email = "421880274612-compute@developer.gserviceaccount.com"
+    email = var.service_account_email
     scopes = [
       "https://www.googleapis.com/auth/compute",
       "https://www.googleapis.com/auth/devstorage.read_only",
