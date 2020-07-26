@@ -20,6 +20,10 @@ resource "null_resource" "controllers" {
     destination = "~/ca.pem"
   }
   provisioner "file" {
+    source      = "ssl/ca-key.pem"
+    destination = "~/ca-key.pem"
+  }
+  provisioner "file" {
     source      = "ssl/service-account.pem"
     destination = "~/service-account.pem"
   }
