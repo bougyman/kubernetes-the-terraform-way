@@ -49,6 +49,8 @@ terraform init
 terraform plan
 ----
 
+### Run Labs 3-11!
+
 If all goes well, you are free to `terraform apply` and watch all the magic happen. When complete, you may continue with k-t-h-w
 https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/12-dns-addon.md[Lab 12]
 
@@ -57,6 +59,38 @@ https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/12-d
 The beauty of terraform lies in its stateful ability to manage resources. To tear the whole cluster down, simply run `terraform destroy && rm ssl/* kube_configs/*`.
 This will destroy all the resources and remove the generated local config files, so it can all be created from scratch again! This saved me a ton of
 time and $$ by being able to create / test / destroy in many iterations.
+
+## What about learning?
+
+Though the `terraform apply` above takes care of all the resource creation and provisioning, it is not meant to obscure these steps for ease, rather
+to show how terraform's GCP resources work. Here's how all the scripts and terraform files line up with the labs
+
+### Lab 3 - Resource Creation
+
+In Lab 3, the basic network and compute resources are created which will host the kubernetes cluster.
+
+#### Networking
+
+Starting with https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/03-compute-resources.md#virtual-private-cloud-network[Virtual Private Cloud],
+this is created in `gcp/network.tf`. Open this file and check it out. It created the network and subnetwork used by the kubenetes cluster.
+
+#### Firewall
+
+The firewall described in https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/03-compute-resources.md#firewall-rules[Lab 3 Firewall]
+is created in `gcp/firewall.tf`. Take a look at the resources which coincide with the `gcloud` commands used in Lab 3.
+
+#### IP Address
+
+The https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/03-compute-resources.md#kubernetes-public-ip-address[Address] is created in
+`gcp/address.tf`. This is the public address and face of the kubernetes cluster.
+
+#### Compute Instances
+
+There are two sets of compute instances, the controllers and the workers. The counts of controllers and workers can be controlled by setting the
+`worker_count` and `controller_count` variables (in `vars.auto.tfvars`). If they are not set, they default to 3 controllers and 3 workers, as k-t-h-w
+does in the labs. These resources are created with the `gcp/instances.tf`.
+NOTE: The `instances.tf` has verbose descriptions of the `google_computel_instance` resources. Many of the attributes are set to their default value and could be excluded.
+
 
 
 
