@@ -83,7 +83,7 @@ resource "google_compute_instance" "worker" {
   machine_type        = "e2-standard-2"
   metadata            = { "pod-cidr" = "10.200.${count.index}.0/24" }
   name                = "worker-${count.index}"
-  project             = "rubyists-kube-sandbox"
+  project             = var.project
   resource_policies   = []
   tags = [
     "worker",
