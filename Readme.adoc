@@ -1,0 +1,62 @@
+# Kubernetes The Terraform Way
+:toc:
+
+
+## Inspiration
+
+After running through the excellent https://github.com/kelseyhightower/kubernetes-the-hard-way[Kubernetes The Hard Way] tutorial,
+I wanted to take a crack at turning it all into terraform modules for various cloud providers. This repository is the result
+of that effort. It is not meant to be an 'easy button' or a reusable terraform module for anything production, only as a complement
+to k-t-h-w to show the relationship between the various `gcloud` resource management commands and the associated terraform resources.
+
+### Provisioning
+
+This module makes heavy use of https://www.terraform.io/docs/provisioners/index.html[Terraform Provisioners], especially the
+https://www.terraform.io/docs/provisioners/null_resource.html[Null Resource] provisioner. This is by no means best-practice, in fact
+it is frowned upon in terraform use in-general. However, it does show the power of provisioners (and their fragility), more on that later.
+
+## Prerequisites
+
+This module requires all of the prerequisites of k-t-h-w, as well as a working terraform binary. The version used to create this module
+is terraform-0.13.0 beta.
+
+## Usage
+
+As this module is a supplement to k-t-h-w, you should start with https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/01-prerequisites.md[Lab 1]
+and continue until you get to https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/01-prerequisites.md[Lab 3]. This module
+creates all resources and provisions all instances (controller and worker instances) that are described in labs 3-11. Once you hit Lab 3, move on to 
+Configuring Terraform
+
+### Configuring Terraform
+
+We'll stick with GCP for now (AWS and Azure planned for future inclusion). First you must get credentials for terraform to manage GCP resources.
+
+* Create credentials .json
++
+[source]
+----
+mkdir -p ~/.gcp
+gcloud iam service-accounts keys create ~/.gcp/k-t-h-w-account.json --iam-account <your_account_identifier>
+----
++
+* Edit `gcp/vars.auto.tfvars` - Enter the full path to the json file created above credential_path, and change the project name to be your project's name.
+* Validate setup
++
+[source]
+----
+cd gcp
+terraform init
+terraform plan
+----
+
+If all goes well, you are free to `terraform apply` and watch all the magic happen. When complete, you may continue with k-t-h-w
+https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/12-dns-addon.md[Lab 12]
+
+### Tearing down
+
+The beauty of terraform lies in its stateful ability to manage resources. To tear the whole cluster down, simply run `terraform destroy && rm ssl/* kube_configs/*`.
+This will destroy all the resources and remove the generated local config files, so it can all be created from scratch again! This saved me a ton of
+time and $$ by being able to create / test / destroy in many iterations.
+
+
+
