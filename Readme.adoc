@@ -56,7 +56,7 @@ terraform plan
 If all goes well, you are free to `terraform apply` and watch all the magic happen. When complete, you may continue with k-t-h-w
 https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/12-dns-addon.md[Lab 12]
 
-### Tearing down
+### Tearing down (Lab 14)
 
 The beauty of terraform lies in its stateful ability to manage resources. To tear the whole cluster down, simply run 
 [source]
