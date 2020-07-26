@@ -1,3 +1,11 @@
+# https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/03-compute-resources.md#firewall-rules
+
+# Create the internal firewall rules to allow comunication of all cluster members
+# From k-t-h-w lab
+# gcloud compute firewall-rules create kubernetes-the-hard-way-allow-internal \
+#    --allow tcp,udp,icmp \
+#    --network kubernetes-the-hard-way \
+#    --source-ranges 10.240.0.0/24,10.200.0.0/16
 resource "google_compute_firewall" "internal" {
   direction      = "INGRESS"
   disabled       = false
@@ -27,6 +35,12 @@ resource "google_compute_firewall" "internal" {
   timeouts {}
 }
 
+# Create the external firewall rules to allow comunication from the outside for ssh and the kubernetes API
+# From k-t-h-w lab
+# gcloud compute firewall-rules create kubernetes-the-hard-way-allow-external \
+#    --allow tcp:22,tcp:6443,icmp \
+#    --network kubernetes-the-hard-way \
+#    --source-ranges 0.0.0.0/0
 resource "google_compute_firewall" "external" {
   direction      = "INGRESS"
   disabled       = false
@@ -61,3 +75,5 @@ resource "google_compute_firewall" "external" {
 
   timeouts {}
 }
+
+# Lab continues in address.tf

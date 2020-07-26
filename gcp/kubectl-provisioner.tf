@@ -1,3 +1,4 @@
+# https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/10-configuring-kubectl.md
 resource "null_resource" "kubectl_config" {
   triggers = {
     address = null_resource.ssl.triggers.address
@@ -10,3 +11,5 @@ resource "null_resource" "kubectl_config" {
     }
   }
 }
+
+# Next, routes.tf creates the pod routing

@@ -1,6 +1,10 @@
-# google_compute_instance.controller[2]:
+# https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/03-compute-resources.md#compute-instances
+
+
+# https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/03-compute-resources.md#kubernetes-controllers
+# Creates all of the controller instances. To match k-t-h-w, var.controller count defaults to 3
 resource "google_compute_instance" "controller" {
-  count               = var.worker_count
+  count               = var.controller_count
   can_ip_forward      = true
   deletion_protection = false
   enable_display      = false
@@ -67,9 +71,10 @@ resource "google_compute_instance" "controller" {
   timeouts {}
 }
 
-# google_compute_instance.workers
+# https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/03-compute-resources.md#kubernetes-workers
+# Creates all of the worker instances. To match k-t-h-w, var.worker_count defaults to 3
 resource "google_compute_instance" "worker" {
-  count               = 3
+  count               = var.worker_count
   can_ip_forward      = true
   deletion_protection = false
   enable_display      = false
@@ -134,3 +139,6 @@ resource "google_compute_instance" "worker" {
 
   timeouts {}
 }
+
+# Verify as per https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/03-compute-resources.md#verification
+# Lab continues in ssl-provisioner.tf

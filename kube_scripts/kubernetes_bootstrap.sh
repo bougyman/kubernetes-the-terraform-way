@@ -142,10 +142,11 @@ sudo ln -s /etc/nginx/sites-available/kubernetes.default.svc.cluster.local /etc/
 sudo systemctl restart nginx
 sudo systemctl enable nginx
 
-kubectl get componentstatuses --kubeconfig admin.kubeconfig
 
-echo "Trying the health check!" ->2
+echo "Trying the health check! on ${HOSTNAME}:${INTERNAL_IP}"
 curl -H "Host: kubernetes.default.svc.cluster.local" -i http://127.0.0.1/healthz
+
+kubectl get componentstatuses --kubeconfig admin.kubeconfig
 
 cat <<EOF | kubectl apply --kubeconfig admin.kubeconfig -f -
 apiVersion: rbac.authorization.k8s.io/v1beta1

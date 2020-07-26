@@ -1,3 +1,5 @@
+# https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/08-bootstrapping-kubernetes-controllers.md#enable-http-health-checks
+
 resource "google_compute_http_health_check" "http_health_check" {
   name        = "kubernetes"
   description = "Kubernetes health check"
@@ -12,6 +14,7 @@ resource "google_compute_http_health_check" "http_health_check" {
   request_path = "/healthz"
 }
 
+# https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/08-bootstrapping-kubernetes-controllers.md#provision-a-network-load-balancer
 resource "google_compute_firewall" "http_health_check" {
   name    = "http-health-check"
   network = google_compute_network.default.name
@@ -41,3 +44,5 @@ resource "google_compute_forwarding_rule" "kubernetes" {
   ip_protocol = "TCP"
   ip_address  = google_compute_address.kube_api.address
 }
+
+# Bootstrapping worker nodes happens in worker-provisioner.tf

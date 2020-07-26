@@ -1,3 +1,5 @@
+# https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/05-kubernetes-configuration-files.md#the-kubelet-kubernetes-configuration-file
+# This builds the workers individual kubeconfig files
 resource "null_resource" "worker_kube_config" {
   triggers = {
     instances = join(" ", google_compute_instance.worker.*.name)
@@ -22,6 +24,8 @@ resource "null_resource" "worker_kube_config" {
   }
 }
 
+# https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/09-bootstrapping-kubernetes-workers.md
+# This will bootstrap all the workers.
 resource "null_resource" "workers" {
   count = var.worker_count
   triggers = {
@@ -37,6 +41,8 @@ resource "null_resource" "workers" {
     host = self.triggers.external_ip
     user = self.triggers.username
   }
+
+  # Copy the kubeconfigs to the workers
   provisioner "file" {
     source      = "kube_configs/${self.triggers.name}.kubeconfig"
     destination = "~/${self.triggers.name}.kubeconfig"
@@ -45,6 +51,8 @@ resource "null_resource" "workers" {
     source      = "kube_configs/kube-proxy.kubeconfig"
     destination = "~/kube-proxy.kubeconfig"
   }
+
+  # Copy the ssl certs and key to the workers
   provisioner "file" {
     source      = "ssl/ca.pem"
     destination = "~/ca.pem"
@@ -57,6 +65,9 @@ resource "null_resource" "workers" {
     source      = "ssl/${self.triggers.name}-key.pem"
     destination = "~/${self.triggers.name}-key.pem"
   }
+
+  # https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/09-bootstrapping-kubernetes-workers.md#provisioning-a-kubernetes-worker-node
+  # Finally, bootstrap the workers
   provisioner "remote-exec" {
     scripts = [
       "kube_scripts/worker_bootstrap.sh"
