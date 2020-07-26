@@ -4,8 +4,8 @@
 : "${RUNC_VERSION:=1.0.0_rc91}"
 : "${CNI_VERSION:=0.8.6}"
 : "${CONTAINERD_VERSION:=1.3.6}"
-sudo apt-get update
-sudo apt-get -y install socat conntrack ipset
+sudo apt-get -qq update
+sudo apt-get -qy install socat conntrack ipset
 
 wget -q --show-progress --https-only --timestamping \
   "https://github.com/kubernetes-sigs/cri-tools/releases/download/v${CRICTL_VERSION}/crictl-v${CRICTL_VERSION}-linux-amd64.tar.gz" \

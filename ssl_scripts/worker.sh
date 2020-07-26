@@ -1,7 +1,15 @@
 #!/bin/bash
 cd ssl
-export instance EXTERNAL_IP INTERNAL_IP
-cat > ${instance}-csr.json <<EOF
+export INSTANCES EXTERNAL_IPS INTERNAL_IPS
+external_ips=( $EXTERNAL_IPS )
+internal_ips=( $INTERNAL_IPS )
+instances=( $INSTANCES )
+for i in ${!instances[@]}
+do
+	instance=${instances[$i]}
+	EXTERNAL_IP=${external_ips[$i]}
+	INTERNAL_IP=${internal_ips[$i]}
+	cat > ${instance}-csr.json <<EOF
 {
   "CN": "system:node:${instance}",
   "key": {
@@ -20,10 +28,11 @@ cat > ${instance}-csr.json <<EOF
 }
 EOF
 
-cfssl gencert \
-  -ca=ca.pem \
-  -ca-key=ca-key.pem \
-  -config=ca-config.json \
-  -hostname=${instance},${EXTERNAL_IP},${INTERNAL_IP} \
-  -profile=kubernetes \
-  ${instance}-csr.json | cfssljson -bare ${instance}
+	cfssl gencert \
+	  -ca=ca.pem \
+	  -ca-key=ca-key.pem \
+	  -config=ca-config.json \
+	  -hostname=${instance},${EXTERNAL_IP},${INTERNAL_IP} \
+	  -profile=kubernetes \
+	  ${instance}-csr.json | cfssljson -bare ${instance}
+done

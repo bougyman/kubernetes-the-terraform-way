@@ -121,8 +121,8 @@ sudo systemctl daemon-reload
 sudo systemctl enable kube-apiserver kube-controller-manager kube-scheduler
 sudo systemctl start kube-apiserver kube-controller-manager kube-scheduler
 
-sudo apt-get update
-sudo apt-get install -y nginx
+sudo apt-get -qq update
+sudo apt-get install -qy nginx
 
 cat > kubernetes.default.svc.cluster.local <<EOF
 server {
