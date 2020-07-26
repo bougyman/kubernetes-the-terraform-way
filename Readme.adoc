@@ -90,7 +90,7 @@ There are two sets of compute instances, the controllers and the workers. The co
 `worker_count` and `controller_count` variables (in `vars.auto.tfvars`). If they are not set, they default to 3 controllers and 3 workers, as k-t-h-w
 does in the labs. These resources are created with the `gcp/instances.tf`.
 
-NOTE: The `instances.tf` has verbose descriptions of the `google_computel_instance` resources. Many of the attributes are set to their default value and could be excluded.
+NOTE: `gcp/instances.tf` has verbose descriptions of the https://www.terraform.io/docs/providers/google/r/compute_instance.html[`google_compute_instance`] resources. Many of the attributes are set to their default value and could be excluded.
 
 
 
