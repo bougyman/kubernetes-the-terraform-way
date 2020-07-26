@@ -87,11 +87,58 @@ The https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/
 #### Compute Instances
 
 There are two sets of compute instances, the controllers and the workers. The counts of controllers and workers can be controlled by setting the
-`worker_count` and `controller_count` variables (in `vars.auto.tfvars`). If they are not set, they default to 3 controllers and 3 workers, as k-t-h-w
+`worker_count` and `controller_count` variables (in `gcp/vars.auto.tfvars`). If they are not set, they default to 3 controllers and 3 workers, as k-t-h-w
 does in the labs. These resources are created with the `gcp/instances.tf`.
 
 NOTE: `gcp/instances.tf` has verbose descriptions of the https://www.terraform.io/docs/providers/google/r/compute_instance.html[`google_compute_instance`] resources. Many of the attributes are set to their default value and could be excluded.
 
+### Lab 4 - The SSL
 
+Most of the work for creating SSL / PKI infra is described in `gcp/ssl-provisioner.tf`, leveraging the scripts in `ssl_scripts/`. This provisioners
+makes abusive/offensive use of the terraform local-exec provisioner to execute scripts which create the ssl artifacts in `gcp/ssl/*`. The provisioners 
+for the workers and controllers will copy these artifacts onto the instances later.
+
+IMPORTANT: Ensure `gcp/ssl/` is empty before running `terraform apply`, in the case where the infrastructure is created and destroyed, the artifacts in this directory will get tainted by the next provisioner and kubernetes will fail bootstrapping.
+
+NOTE: The https://www.terraform.io/docs/providers/google/r/compute_instance.html[Kubelet Client Certificates] are created in `gcp/worker-provisioner.tf`, utitlizing `ssl_scripts/worker.sh` for each worker
+
+### Lab 5 - kubeconfig files
+
+The kubeconfig files used in the labs are created by `gcp/kubeconfig-provisioner.tf` and saved to `gcp/kube_configs` upon creation.
+
+### Lab 6 - Data Encryption
+
+`gcp/ssl/encryption.yaml` is created from `gcp/ssl-provisioner`.
+
+### Lab 7 - Bootstrapping etcd
+
+etcd is bootstrapped via the `gcp/controller-provisioner.tf`, using the `kube_scripts/controller_bootstrap.sh` script.
+
+### Lab 8 - Bootstraping Kubernetes Control Plane
+
+The https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/08-bootstrapping-kubernetes-controllers.md[Kubernetes Control Plane] is
+bootstrapped in `gcp/controller-provisioner.tf` as well, as part of the same `kube_scripts/controller_bootstrap.sh` script that etcd bootstraps with. This
+also creates the load balancer, health check, and an nginx redirect to make the health check work.
+
+### Lab 9 - Bootstrap the Workers
+
+The https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/09-bootstrapping-kubernetes-workers.md[Worker Bootstrap] happens
+in `gcp/worker-provisioner.tf`, using `kube_scripts/worker_bootstrap.sh`. This does all the needful to get the workers up and running and communicating
+with the control plane
+
+### Lab 10 - Configuring kubectl
+
+The https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/10-configuring-kubectl.md[kubectl configuration] happens in 
+`gcp/kubectl-provisioner.tf`, using `kube_scripts/kubectl-config.sh`. This allows your local machine to use `kubectl` to control the cluster.
+
+### Lab 11 - Pod Routing
+
+https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/11-pod-network-routes.md[Pod Routing] happens in `gcp/routes.tf`. This enables
+pods to communicate with other pods.
+
+## Labs 12-14
+
+Labs https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/12-dns-addon.md[12] and https://github.com/kelseyhightower/kubernetes-the-hard-way/blob/master/docs/13-smoke-test.md[13] should be followed there. When you get to Lab 14, simply run `terraform destroy` in th `gcp` directory, and it takes
+care of all resource destruction.
 
 
