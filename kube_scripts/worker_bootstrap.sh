@@ -1,7 +1,7 @@
 #!/bin/bash
 : "${KUBERNETES_VERSION:=1.18.6}"
 : "${CRICTL_VERSION:=1.18.0}"
-: "${RUNC_VERSION:=1.0.0_rc91}"
+: "${RUNC_VERSION:=1.0.0-rc91}"
 : "${CNI_VERSION:=0.8.6}"
 : "${CONTAINERD_VERSION:=1.3.6}"
 sudo apt-get -qq update
