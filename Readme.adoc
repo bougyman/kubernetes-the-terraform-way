@@ -40,6 +40,8 @@ First things first, go find your IAM Compute Engine default service account entr
 export TF_VAR_service_account_email=<your_service_email_account>
 ----
 +
+IMPORTANT: The <your_service_email_account> can be found in the 'IAM' tab of your project. It's the Compute Engine default service account entry
++
 * Create credentials .json
 +
 [source]
@@ -47,8 +49,6 @@ export TF_VAR_service_account_email=<your_service_email_account>
 mkdir -p ~/.gcp
 gcloud iam service-accounts keys create ~/.gcp/k-t-h-w-account.json --iam-account $TF_VAR_service_account_email
 ----
-+
-IMPORTANT: The <your_account_identifier> can be found in the 'IAM' tab of your project. It's the Compute Engine default service account entry
 +
 * Edit `gcp/vars.auto.tfvars` - Enter the full path to the json file created above credential_path, and change the project name to be your project's name.
 * Set your username
